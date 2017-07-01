@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/MacPorts 2015_8) (preloaded format=pdflatex 2016.2.22)  1 JUL 2017 16:50
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/MacPorts 2015_8) (preloaded format=pdflatex 2016.2.22)  1 JUL 2017 17:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -388,41 +388,41 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 
 {/opt/local/var/db/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3] [4]
-Overfull \hbox (8.11174pt too wide) in paragraph at lines 101--102
+Overfull \hbox (8.11174pt too wide) in paragraph at lines 107--108
 []\OT1/cmr/m/n/10 We start from the Neigh-bor-hood Sub-graph Pair-wise Dis-tanc
 e Ker-nel (NSPDK)
  []
 
 [5]
-Overfull \hbox (0.17856pt too wide) in paragraph at lines 136--137
+Overfull \hbox (0.17856pt too wide) in paragraph at lines 142--143
 []\OT1/cmr/bx/n/10 BioGPS: \OT1/cmr/m/n/10 A gene co-expression net-work is con
 -structed from BioGPS dataset,
  []
 
-[6]
-Overfull \hbox (2.40923pt too wide) in paragraph at lines 181--204
+[6] [7]
+Overfull \hbox (2.40923pt too wide) in paragraph at lines 187--210
  [][] 
  []
 
-[7] [8] [9] (./neurocomputing.bbl [10])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 246.
+(./neurocomputing.bbl [8] [9] [10])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 252.
  [11]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 246.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 252.
  (./neurocomputing.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 246.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 246.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 252.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 252.
 Package rerunfilecheck Info: File `neurocomputing.out' has not changed.
-(rerunfilecheck)             Checksum: 3E4F58A542A03575D9BA54BB810F9C4D;659.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 246.
+(rerunfilecheck)             Checksum: 686F5DE2B02FEDD93D12C96EEEDCA240;719.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 252.
  ) 
 Here is how much of TeX's memory you used:
- 6817 strings out of 494119
- 96278 string characters out of 6155692
- 199587 words of memory out of 5000000
- 10018 multiletter control sequences out of 15000+600000
+ 6819 strings out of 494119
+ 96308 string characters out of 6155692
+ 197588 words of memory out of 5000000
+ 10019 multiletter control sequences out of 15000+600000
  11701 words of font info for 44 fonts, out of 8000000 for 9000
  475 hyphenation exceptions out of 8191
- 34i,11n,30p,2461b,458s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 34i,11n,30p,2461b,444s stack positions out of 5000i,500n,10000p,200000b,80000s
 </opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx10.pfb></o
 pt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmex10.pfb></opt/lo
 cal/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi10.pfb></opt/local/s
@@ -440,10 +440,10 @@ pt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy7.pfb></opt/loc
 al/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti10.pfb></opt/local/sh
 are/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti7.pfb></opt/local/share/te
 xmf-texlive/fonts/type1/public/amsfonts/cm/cmti8.pfb>
-Output written on neurocomputing.pdf (11 pages, 233332 bytes).
+Output written on neurocomputing.pdf (11 pages, 234087 bytes).
 PDF statistics:
- 206 PDF objects out of 1000 (max. 8388607)
- 173 compressed objects within 2 object streams
- 36 named destinations out of 1000 (max. 500000)
- 81 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 213 PDF objects out of 1000 (max. 8388607)
+ 180 compressed objects within 2 object streams
+ 37 named destinations out of 1000 (max. 500000)
+ 89 words of extra memory for PDF output out of 10000 (max. 10000000)
 
