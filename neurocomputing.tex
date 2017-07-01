@@ -121,11 +121,23 @@ We define the \textit{distance} $\mathcal{D}(u,v)$ between two nodes $u$ and $v$
 
 \textit{Iterative k-core decomposition} \cite{alvarez2005k}: The node set is partitioned in two groups on the basis of the degree of each node w.r.t. a threshold degree $D$, the first part contains all nodes with degree smaller or equal than $D$ and the second part the remaining ones. The node partition is used to induce the ''conjunctive' vs ''disjunctive' notion for the edge partition: edges that have both endpoints in the same part (be it the first or the second) are marked as conjunctive, otherwise they are marked as disjunctive. We apply the k-core decomposition iteratively, where at each iteration we consider only the graph induced by the conjunctive edges. We stop iterating the decomposition after a user defined number of steps. Note that this decomposition does not alter the cardinality of the edge set, it is simply a procedure to mark each edge with the attribute conjunctive or disjunctive.  
 
-
+\begin{figure}
+\centering
+\includegraphics[width=.9\textwidth]{k_core}
+\caption{K-core decomposition}
+\label{fig:example}
+\end{figure}
 
 \textit{Clique decomposition} \cite{tarjan1985decomposition}: To model the notion that nodes in a clique are tightly related, we summarize the whole clique with a new 'representative' node. All the cliques (completely connected subgraphs) with a number of nodes greater than a threshold size $C$ are identified. The endpoints of all edges incident on the clique's nodes are moved to the representative node. Disjunctive edges are introduced to connect each node in the clique to the representative. Finally all edges with both endpoints in the clique are removed.
 
 In our work a network is transformed by applying first the iterative k-core decomposition and then the clique decomposition.
+
+\begin{figure}
+\centering
+\includegraphics[width=.9\textwidth]{clique}
+\caption{Clique decomposition}
+\label{fig:example}
+\end{figure}
 
 \subsection{Node Graph Kernels} 
 We start from the Neighborhood Subgraph Pairwise Distance Kernel (NSPDK) \cite{costa2010fast} and adapt it to express the similarity between nodes in a single network. The key idea in NSPDK is to decompose graphs in small fragments and count how many pairs of fragments are shared between two instances. We introduce two improvements: 1) we partition the features according to the individual node's neighborhood, and 2) we introduce a  distinction between ''disjunctive'' and ''conjunctive'' edges.
