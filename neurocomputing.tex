@@ -101,25 +101,25 @@ Graph node kernels, graph decomposition, disease gene prioritization
 Predictive systems for gene-disease associations are often based on a notion of similarity between genes. A common strategy is to encode relations between genes as a network and use graph based techniques to make useful inferences. In the last decades, a number of graph kernel methods have been proposed that directly exploit transitive properties in biological networks. The prototypical method is the Diffusion kernel (DK) \cite{kondor2002diffusion} inspired by the heat diffusion phenomenon. The key idea is to allow a given amount of {\em heat} placed on nodes to {\em diffuse} through the edges. The similarity between two nodes $v_{i}, v_{j}$ is then defined as the amount of heat starting from $v_{i}$ and reaching $v_{j}$ within a given time interval. In DK the heat flow is proportional to the number of paths connecting two nodes, which introduces an undesired bias that penalize peripheral nodes w.r.t. central ones. This problem is tackled by a modified version of DK called Markov exponential diffusion kernel (MED) \cite{chen2014disease} where a Markov matrix replaces the Laplacian matrix.  Another kernel called Markov diffusion kernel (MD) \cite{fouss2006experimental}, exploits instead the notion of {\em diffusion distances}, a measure of similarity between patterns of heat diffusion. The Regularized Laplacian kernel (RL) \cite{chebotarev2006matrix} represents instead a normalized version of the random walk with restart model and defines the node similarity as the number of paths connecting two nodes with different lengths. All these approaches can be applied to dense networks with high degree nodes. A drawback of these approaches is however their relatively low discriminative capacity. This is in part due to the fact that information is processed in an additive and independent fashion which prevents them from accurately modeling the configuration of each gene's context. To address this issue here we propose to employ a {\em decompositional} graph kernel (DGK) \cite{haussler1999convolution} technique in which the similarity function between graphs can be formed by decomposing each graph into subgraphs and by devising a valid local kernel between the subgraphs. To exploit its higher discriminative capacity we first decompose the network in a collection of connected sparse graphs and then we develop a suitable kernel, that we call Conjunctive Disjunctive Node Kernel (CDNK).
 
 \section{Material and methods}
-We start from the type of similarity notion computed by decomposition kernels between graph instances and adapt it to express the similarity between nodes in a single network. In this work we use three key ideas: 1) genes are described using their functional profile encoded as a vector of real values, 2) the network is marked to distinguish highly connected components from sparsely connected ones, and 3) we transform the neighborhood of each gene in a sparse high dimensional vector that can be easily processed by standard machine learning techniques such as SVMs.
+We start from the type of similarity notion computed by decomposition kernels between graph instances and adapt it to express the similarity between nodes in a single network. In this work we use three key ideas: \textit{i}) genes are described using their functional profile encoded as a vector of real values, \textit{ii}) the network is marked to distinguish highly connected components from sparsely connected ones, and \textit{iii}) we transform the neighborhood of each gene in a sparse high dimensional vector that can be easily processed by standard machine learning techniques such as SVMs.
 
 \textit{Definitions.} 
 We represent a problem instance as a graph $G=(V,E)$ where $V$ is the set of nodes and $E$ is the set of links.
-We define the \textit{distance} $\mathcal{D}(u,v)$ between two nodes $u$ and $v$, as the number of edges on the shortest path between them. The \textit{neighborhood} of a node $u$ with radius $r$, $N_r(u) = \lbrace v\ |\ d(u,v) \leq r \rbrace$, is the set of nodes at distance no greater than $r$ from $u$. The corresponding \textit{neighborhood subgraph} $\mathcal{N}_{r}^{u}$ is the  subgraph induced by the neighborhood (i.e. considering all the edges with endpoints in $N_r(u)$). The \textit{degree} of a node $u$, $d(u) = |\mathcal{N}_{1}^{u}|$, is the cardinality of its neighborhood. The maximum node degree in the graph $G$ is $d(G)$.
+We define the \textit{distance} $\mathcal{D}(u,v)$ between two nodes $u$ and $v$, as the number of edges on the shortest path between them. The \textit{neighborhood} of a node $u$ with radius $r$, $N_r(u) = \lbrace v\ |\ \mathcal{D}(u,v) \leq r \rbrace$, is the set of nodes at distance no greater than $r$ from $u$. The corresponding \textit{neighborhood subgraph} $\mathcal{N}_{r}^{u}$ is the  subgraph induced by the neighborhood (i.e. considering all the edges with endpoints in $N_r(u)$). The \textit{degree} of a node $u$, $deg(u) = |\mathcal{N}_{1}^{u}|$, is the cardinality of its neighborhood. The maximum node degree in the graph $G$ is $deg(G)$.
 
 
-\subsection{Gene Labeling} Gene-disease associations networks typically represent genes as nodes labeled with a gene identifier. Here we take a different approach and use the node labels to encode abstract information about the genes. In this way downstream machine learning algorithms can generalize from similar examples and allow the identification of overlooked but related genes. We experiment with two types of information: 1) topological information and 2) functional information. 
+\subsection{Gene Labeling} Gene-disease associations networks typically represent genes as nodes labeled with a gene identifier. Here we take a different approach and use the node labels to encode abstract information about the genes. In this way downstream machine learning algorithms can generalize from similar examples and allow the identification of overlooked but related genes. We experiment with two types of information: \textit{i}) topological information and \textit{ii}) functional information. 
 
-\textit{Topological label.} This information is simply based on the connectivity degree of the gene. The idea is that genes that have the same number of connections are more similar than genes with a different connectivity. The node labeling function $\ell$ assigns the degree for nodes $u$ having degree less than or equal than a user defined threshold $T$ ($T=5$ in our experimental evaluation). However degree values larger than $T$ are subsequently discretized into $k$ levels. Formally, the labeling function is defined as:
+\textit{Topological label.} This information is simply based on the connectivity degree of the gene. The idea is that genes that have the same number of connections are more similar than genes with a different connectivity. The node labeling function $\ell$ assigns the degree for nodes $u$ having degree less than or equal a user defined threshold $T$ ($T=5$ in our experimental evaluation). However degree values larger than $T$ are subsequently discretized into $k$ levels. Formally, the labeling function is defined as:
 \begin{center}
 $\ell(u) = \left\{
 	\begin{array}{ll}
-		d(u),\  & \mbox{if } d(u) \leq T \\
-		T+i,\ & \mbox{if } d(u) > T
+		deg(u),\  & \mbox{if } deg(u) \leq T \\
+		T+i,\ & \mbox{if } deg(u) > T
 	\end{array}
 \right.$,
 \end{center}
-where $i = \lceil \frac{d(u)-T}{bin}\rceil$, $bin = \frac{d(G)-T}{\lambda - T}$ and $\lambda$ ($\lambda > T$) is the maximum number of symbols used. The value of $\lambda$ depend on the degree distribution and can be tuned as a hyperparameter of the approach.
+where $i = \lceil \frac{deg(u)-T}{bin}\rceil$, $bin = \frac{deg(G)-T}{\lambda - T}$ and $\lambda$ ($\lambda > T$) is the maximum number of symbols used. The value of $\lambda$ depends on the degree distribution and can be tuned as a hyperparameter of the approach.
 
 
 \textit{Functional label.} This type of information is based on the \textit{Gene Ontology} \cite{gene2004gene} resource. We use the ontology to construct binary vectors representing a bag-of-words encoding for each gene (i.e. if one of the 26501 GO-terms is associated with the gene). The resulting vectors are then clustered using the k-means algorithm  into a user defined number of classes $K$ (tuned as a hyperparameter of the approach), so that genes with similar description profiles receive the same class identifier as label. 
@@ -129,33 +129,33 @@ In addition to encoding the functional information as a discrete label we add a 
 
 
 \subsection{Network Decomposition} 
-In gene-disease associations networks it is not uncommon to find nodes with high degrees. Unfortunately these cases cannot be effectively processed by a neighborhood based decomposition kernel since these are based on the notion of exact matches and the probability of finding identical neighborhoods decreases exponentially as the degree increases. This means that in a finite network it quickly becomes impossible to find any match and hence learn or generalize at all. As an alternative, we propose a procedure to ''sparsify'' the network that is observed by the neighborhood kernel. In reality we do not alter the cardinality of the edge set, but rather mark the edges with special attributes that will inform the kernel computation. The result is a procedure that decomposes the network in a linked collection of sparse sub-networks where each node has a reduced connectivity when considering the edges of a specific type. However the other edges are still available to connect the various sub-networks. We distinguish two types of edges: {\em conjunctive} and {\em disjunctive} edges. Nodes linked by conjunctive edges are going to be used jointly to define the notion of context and will be visible to the neighborhood graph kernel. Nodes linked by disjunctive edges are instead used to define features based only on the pairwise co-occurrence of the genes at the endpoints and are processed by our novel kernel.
+In gene-disease associations networks it is not uncommon to find nodes with high degrees. Unfortunately these cases cannot be effectively processed by a neighborhood based decomposition kernel since these are based on the notion of exact matches and the probability of finding identical neighborhoods decreases exponentially as the degree increases. This means that in a finite network it quickly becomes impossible to find any match and hence learn or generalize at all. As an alternative, we propose a procedure to ``sparsify'' the network that is observed by the neighborhood kernel. In reality we do not alter the cardinality of the edge set, but rather mark the edges with special attributes that will inform the kernel computation. The result is a procedure that decomposes the network in a linked collection of sparse sub-networks where each node has a reduced connectivity when considering the edges of a specific type. However the other edges are still available to connect the various sub-networks. We distinguish two types of edges: {\em conjunctive} and {\em disjunctive} edges. Nodes linked by conjunctive edges are going to be used jointly to define the notion of context and will be visible to the neighborhood graph kernel. Nodes linked by disjunctive edges are instead used to define features based only on the pairwise co-occurrence of the genes at the endpoints and are processed by our novel kernel.
 
 
 
 
-\textit{Iterative k-core decomposition} \cite{alvarez2005k}: The node set is partitioned in two groups on the basis of the degree of each node w.r.t. a threshold degree $D$, the first part contains all nodes with degree smaller or equal than $D$ and the second part the remaining ones. The node partition is used to induce the ''conjunctive' vs ''disjunctive' notion for the edge partition: edges that have both endpoints in the same part (be it the first or the second) are marked as conjunctive, otherwise they are marked as disjunctive. We apply the k-core decomposition iteratively, where at each iteration we consider only the graph induced by the conjunctive edges. We stop iterating the decomposition after a user defined number of steps. Note that this decomposition does not alter the cardinality of the edge set, it is simply a procedure to mark each edge with the attribute conjunctive or disjunctive.  
+\textit{Iterative k-core decomposition} \cite{alvarez2005k}: The node set is partitioned in two groups on the basis of the degree of each node w.r.t. a threshold degree $D$, the first part contains all nodes with degree smaller or equal than $D$ and the second part the remaining ones. The node partition is used to induce the ``conjunctive'' vs ``disjunctive'' notion for the edge partition: edges that have both endpoints in the same part are marked as conjunctive, otherwise they are marked as disjunctive. We apply the k-core decomposition iteratively, where at each iteration we consider only the graph induced by the conjunctive edges. We stop iterating the decomposition after a user defined number of steps. Note that this decomposition does not alter the cardinality of the edge set, it is simply a procedure to mark each edge with the attribute conjunctive or disjunctive.  
 
 \begin{figure}
 \centering
 \includegraphics[width=.9\textwidth]{k_core}
-\caption{K-core decomposition}
+\caption{K-core decomposition with degree threshold $D = 5$}
 \label{fig:example}
 \end{figure}
 
-\textit{Clique decomposition} \cite{tarjan1985decomposition}: To model the notion that nodes in a clique are tightly related, we summarize the whole clique with a new 'representative' node. All the cliques (completely connected subgraphs) with a number of nodes greater than a threshold size $C$ are identified. The endpoints of all edges incident on the clique's nodes are moved to the representative node. Disjunctive edges are introduced to connect each node in the clique to the representative. Finally all edges with both endpoints in the clique are removed.
+\textit{Clique decomposition} \cite{tarjan1985decomposition}: To model the notion that nodes in a clique are tightly related, we summarize the whole clique with a new ``representative'' node. All the cliques (completely connected subgraphs) with a number of nodes greater than a threshold size $C$ are identified. The endpoints of all edges incident on the clique's nodes are moved to the representative node. Disjunctive edges are introduced to connect each node in the clique to the representative. Finally all edges with both endpoints in the clique are removed.
 
 In our work a network is transformed by applying first the iterative k-core decomposition and then the clique decomposition.
 
 \begin{figure}
 \centering
 \includegraphics[width=.9\textwidth]{clique}
-\caption{Clique decomposition}
+\caption{Pairwise neighborhood subgraphs with $r=1$, $d=3$ using ``conjuction'' and ``disjuctive'' edges}
 \label{fig:example}
 \end{figure}
 
 \subsection{Node Graph Kernels} 
-We start from the Neighborhood Subgraph Pairwise Distance Kernel (NSPDK) \cite{costa2010fast} and adapt it to express the similarity between nodes in a single network. The key idea in NSPDK is to decompose graphs in small fragments and count how many pairs of fragments are shared between two instances. We introduce two improvements: 1) we partition the features according to the individual node's neighborhood, and 2) we introduce a  distinction between ''disjunctive'' and ''conjunctive'' edges.
+We start from the Neighborhood Subgraph Pairwise Distance Kernel (NSPDK) \cite{costa2010fast} and adapt it to express the similarity between nodes in a single network. The key idea in NSPDK is to decompose graphs in small fragments and count how many pairs of fragments are shared between two instances. We introduce two improvements: \textit{i}) we partition the features according to the individual node's neighborhood, and \textit{ii}) we introduce a  distinction between ``disjunctive'' and ``conjunctive'' edges.
 
 \subsubsection{The Neighborhood Subgraph Pairwise Distance Kernel}
 The NSPDK is an instance of convolution kernel \cite{haussler1999convolution} where given a graph $G \in \mathcal{G}$ and two rooted graphs $A_u, B_v$, the relation $R_{r,d}(A_u, B_v, G)$ is true {\em iff} $A_u \cong \mathcal{N}_r^u$ is (up to isomorphism $\cong$) a neighborhood subgraph of radius $r$ of $G$ and so is $B_v \cong  \mathcal{N}_r^v$, with roots at distance $\mathcal{D}(u,v)= d$. We denote $R^{-1}$ as the inverse relation that returns all pairs of neighborhoods of radius $r$ at distance $d$ in $G$, $R^{-1}_{r,d}(G) = \lbrace A_u, B_v | R_{r,d}(A_u,B_v,G)=true\rbrace$. The kernel $\kappa_{r,d}$ over $\mathcal{G} \times \mathcal{G}$, counts the number of such fragments in common in two input graphs: 
@@ -172,10 +172,10 @@ isomorphic to $B$ and 0 otherwise.  Finally, the NSPDK is defined as $K(G,G') = 
 
 \subsubsection{The Conjunctive Disjunctive Node Kernel}
 We extend NSPDK and define a node kernel $K(G_u,G_{u'})$ between two copies of the same network $G$ where we distinguish the nodes $u$ and $u'$ respectively. The idea is to define the features of a node $u$ as the subset of NSPDK features that always have the node $u$ as one of the roots. In addition we distinguish between two types of edges, called {\em conjunctive} and {\em disjunctive} edges. When computing distances to induce neighborhood subgraphs, only conjunctive edges are considered. When choosing the
-pair of neighborhoods to form a single feature, we additionally consider roots $u$ and $v$ that are not at distance $d$ but such that $u$ is connected to $w$ via a disjunctive edge and such that $w$ is at distance $d$ from $v$. In this way disjunctive edges can still allow an {\em information flow} even if their
+pair of neighborhoods to form a single feature, we additionally consider roots $u$ and $v$ that are not at distance $d$ but such that $u$ is connected to $w$ via a disjunctive edge and such that $w$ is at distance $d$ from $v$ (Figure \ref{fig:cdnk} is an illustration). In this way disjunctive edges can still allow an {\em information flow} even if their
 endpoints are only considered in a pairwise fashion and not jointly. 
 
-Formally, we define two relations: the \textit{conjunctive relation} $R^{\wedge}_{r,d}(A_u, B_v, G_u)$ identical to the NSPDK relation $R_{r,d}(A_u, B_v, G)$,  and (ii) $\mathcal{D}(u,v)= d$; the \textit{disjunctive relation} $R_{r,d}^{\vee}(A_u, B_v, G_u)$ is true {\em iff} (i)  $A_u \cong \mathcal{N}_r^u$ and $B_v \cong \mathcal{N}_r^u$ are true, (ii) $\exists w$ s.t. $\mathcal{D}(w,v)= d$, and (iii) $(u,w)$ is a disjunctive edge. We define $\kappa_{r,d}$ on the  inverse relations ${R^{\wedge}_{r,d}}^{ -1}$ and ${R^{\vee}_{r,d}}^{ -1}$
+Formally, we define two relations: the \textit{conjunctive relation} $R^{\wedge}_{r,d}(A_u, B_v, G_u)$ identical to the NSPDK relation $R_{r,d}(A_u, B_v, G)$,  and (ii) $\mathcal{D}(u,v)= d$; the \textit{disjunctive relation} $R_{r,d}^{\vee}(A_u, B_v, G_u)$ is true {\em iff} (i)  $A_u \cong \mathcal{N}_r^u$ and $B_v \cong \mathcal{N}_r^u$ are true, (ii) $\exists w$ s.t. $\mathcal{D}(w,v)= d$, and (iii) $(u,w)$ is a disjunctive edge. We define $\kappa_{r,d}$ on the  inverse relations ${R^{\wedge}_{r,d}}^{ -1}$ and ${R^{\vee}_{r,d}}^{ -1}$:
 \begin{center}
  $\kappa_{r,d}(G_u,G_{u'}) = \!\!\!\!\!\!\!\!\!\!\!\!
  \sum\limits_{\substack {A_u,{B}_{v} \in {R_{r,d}^{\wedge}}^{ -1}(G_u) \\ A'_{u'},{B'}_{v'} \in {R_{r,d}^{\wedge}}^{ -1}(G_{u'}) }} \!\!\!\!\!\!\!\!\!\!\!\!
@@ -191,8 +191,8 @@ The CDNK is finally defined as $K(G_u,G_v) = \sum\limits_{r}{\sum\limits_{d}{\ka
 \begin{figure}
 \centering
 \includegraphics[width=.9\textwidth]{cdnk}
-\caption{K-core decomposition}
-\label{fig:example}
+\caption{Pairwise neighborhood subgraphs for the ``red'' node with $r=1$ and $d=3$ using ``conjuction'' and ``disjuctive'' edges}
+\label{fig:cdnk}
 \end{figure}
 
 \subsection{Real valued node information}
@@ -211,11 +211,13 @@ We perform an empirical evaluation of the predictive performance of several kern
 To evaluate the performance of graph node kernels we analyze the {\em gene prioritization}, i.e. given a set of genes known to be associated to a given disease, gene prioritization is the task to rank the candidate genes based on their probabilities to be related to that disease. Similar to the evaluation process used in \cite{chen2014disease}, we choose 12 diseases \cite{goh2007human} with at least 30 confirmed genes. For each disease, we construct a positive set $\mathcal{P}$ with all confirmed disease genes, and a negative set $\mathcal{N}$ which contains random genes associated at least to one disease class which is not related to the class that is defining the positive set. In \cite{chen2014disease} the ratio between the dataset sizes is chosen as $\vert \mathcal{N} \vert = \frac{1}{2} \vert \mathcal{P} \vert$. The predictive performance of each method is evaluated via a leave-one-out cross validation: one gene is kept out in turn and the rest are used to train an SVM model. We compute a decision score $q_i$ for the test gene $g_i$ as the top percentage value of score $s_i$ among all candidate gene scores. We collect all decision scores for every gene in the training set to form a global decision score list on which we compute the AUC ROC.
 
 \textbf{Model Selection:}
-The hyper parameters of the various methods are set using a k-fold on a dataset set that is then never used in the predictive performance estimate. We try the values for diffusion parameter in DK and MED in $\lbrace 10^{-3}, 10^{-3}, 10^{-2}, 10^{-1} \rbrace$, time steps in MD in $\lbrace 1, 10, 100 \rbrace$ and RL parameter in $\lbrace 1, 4, 7 \rbrace$. For CDNK, we try for the degree threshold values in $\lbrace 10,\ 15,\ 20 \rbrace$, clique size threshold in $\lbrace 4,\ 5 \rbrace$, maximum radius in $\lbrace 1,\ 2 \rbrace$, maximum distance in $\lbrace 2,\ 3,\ 4 \rbrace$. Finally, the regularization trade off parameter $C$ for the SVM is searched in $\lbrace 10^{-5},  \ 10^{-4}, \ 10^{-3},\ 10^{-2},\ 10^{-1}, 1,\ 10,\ 10^2 \rbrace$.
+The hyper parameters of the various methods are set using a k-fold on a dataset set that is then never used in the predictive performance estimate. We try the values for diffusion parameter in DK and MED in $\lbrace 10^{-3}, 10^{-3}, 10^{-2}, 10^{-1} \rbrace$, time steps in MD in $\lbrace 1, 10, 100 \rbrace$ and RL parameter in $\lbrace 1, 4, 7 \rbrace$. For CDNK, we try for the degree threshold values in $\lbrace 10,\ 15,\ 20 \rbrace$, clique size threshold in $\lbrace 4,\ 5 \rbrace$, maximum radius in $\lbrace 1,\ 2 \rbrace$, maximum distance in $\lbrace 2,\ 3,\ 4 \rbrace$, nuber of clusters $K$ in $\lbrace 5,\ 7 \rbrace$. Finally, the regularization trade off parameter $C$ for the SVM is searched in $\lbrace 10^{-5},  \ 10^{-4}, \ 10^{-3},\ 10^{-2},\ 10^{-1}, 1,\ 10,\ 10^2 \rbrace$.
 \section{Results and discussion}
 Table \ref{table_biogps} and \ref{table_pathways} show the AUC performance of the models trained by using different graph node kernels on 11 gene-disease association problems using the BioGPS and Pathways datasets to materialize the gene relation network. We note that CDNK ranks first in 7 out of 11 cases using  both networks. CDNK is the top performant kernel also when considering the average AUC ROC and the average rank with 73.3/2.0, 76.5/1.8, with a difference w.r.t. the second best of 5.5$\%$ and 1$\%$ on BioGPS and Pathways, respectively. MED and RL show similar and moderate results with small gap between them. DK and MD exhibit modest performance on average and  are ranked last in many cases: 7 times out of 11 for MD in BioGPS and 10 out of 11 for DK in Pathways. Low performance cases include networks that have high {\em average} node degree which is likely to yield very sparse and fragmented network decompositions.
 %======================================================
 \begin{table}
+\caption{\textit {Predictive performance on 11 gene-disease associations in percentage using network induced by the BioGPS. Best results are in bold. We report the AUC ROC and the rank for each kernel method in which CDNK1 uses ontology for discrete labels, CDNK2 uses ontology for both discrete and continous labels, CDNK3 uses node degree for discrete labels and CDNK4 uses degree and ontology for both discrete and continous labels, respectively.}}
+\vspace*{5pt}
 \centering
 \setlength{\tabcolsep}{1mm}
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
@@ -241,12 +243,12 @@ $\overline{AUC}$ & 66.6 & 63.5 & 67.8 & 67.6 & 73.2 & \textbf{77.8} & 73.9 & 76.
 $\overline{Rank}$ & 	6.18 & 7.18 & 5.27 & 4.82 & 4.45 & \textbf{1.55} & 4.18 & 2.36 \\
  \hline 
 \end{tabular}
-\caption{\textit {Predictive performance on 11 gene-disease associations in percentage using network induced by the BioGPS. Best results are in bold. We report the AUC ROC and the rank for each kernel method in which CDNK1 uses ontology for discrete labels, CDNK2 uses ontology for both discrete and continous labels, CDNK3 uses node degree for discrete labels and CDNK4 uses degree and ontology for both discrete and continous labels, respectively.}}
 \label{table_biogps}
 \end{table}
 %==================================================
 \begin{table}
-%\vspace*{-5pt}
+\caption{\textit {Predictive performance on 11 gene-disease associations in percentage using network induced by the Pathways. Best results are in bold. We report the AUC ROC and the rank for each kernel method in which CDNK1 uses ontology for discrete labels, CDNK2 uses ontology for both discrete and continous labels, CDNK3 uses node degree for discrete labels and CDNK4 uses degree and ontology for discrete and continous labels, respectively.}}
+\vspace*{5pt}
 \centering
 \setlength{\tabcolsep}{1mm}
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
@@ -272,7 +274,6 @@ $\overline{AUC}$ & 62.6 & 70.1 & 75.2 & 75.3 & 76.5 & 77.8 & 77.2 & \textbf{78.5
 $\overline{Rank}$ & 7.82 & 6.91 & 4.64 & 4.18 & 3.64 & 2.82 & 3.45 & \textbf{2.55} \\
  \hline 
 \end{tabular}
-\caption{\textit {Predictive performance on 11 gene-disease associations in percentage using network induced by the Pathways. Best results are in bold. We report the AUC ROC and the rank for each kernel method in which CDNK1 uses ontology for discrete labels, CDNK2 uses ontology for both discrete and continous labels, CDNK3 uses node degree for discrete labels and CDNK4 uses degree and ontology for discrete and continous labels, respectively.}}
 \label{table_pathways}
 \end{table}
 
