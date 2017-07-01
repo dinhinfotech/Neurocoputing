@@ -27,6 +27,8 @@
 
 \journal{Journal of \LaTeX\ Templates}
 
+\newcommand{\IR}{\rm I\!R}
+
 %%%%%%%%%%%%%%%%%%%%%%%
 %% Elsevier bibliography styles
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -101,22 +103,35 @@ Predictive systems for gene-disease associations are often based on a notion of 
 \section{Material and methods}
 We start from the type of similarity notion computed by decomposition kernels between graph instances and adapt it to express the similarity between nodes in a single network. In this work we use three key ideas: 1) genes are described using their functional profile encoded as a vector of real values, 2) the network is marked to distinguish highly connected components from sparsely connected ones, and 3) we transform the neighborhood of each gene in a sparse high dimensional vector that can be easily processed by standard machine learning techniques such as SVMs.
 
+\textit{Definitions.} 
+We represent a problem instance as a graph $G=(V,E)$ where $V$ is the set of nodes and $E$ is the set of links.
+We define the \textit{distance} $\mathcal{D}(u,v)$ between two nodes $u$ and $v$, as the number of edges on the shortest path between them. The \textit{neighborhood} of a node $u$ with radius $r$, $N_r(u) = \lbrace v\ |\ d(u,v) \leq r \rbrace$, is the set of nodes at distance no greater than $r$ from $u$. The corresponding \textit{neighborhood subgraph} $\mathcal{N}_{r}^{u}$ is the  subgraph induced by the neighborhood (i.e. considering all the edges with endpoints in $N_r(u)$). The \textit{degree} of a node $u$, $d(u) = |\mathcal{N}_{1}^{u}|$, is the cardinality of its neighborhood. The maximum node degree in the graph $G$ is $d(G)$.
+
+
 \subsection{Gene Labeling} Gene-disease associations networks typically represent genes as nodes labeled with a gene identifier. Here we take a different approach and use the node labels to encode abstract information about the genes. In this way downstream machine learning algorithms can generalize from similar examples and allow the identification of overlooked but related genes. We experiment with two types of information: 1) topological information and 2) functional information. 
 
-Topological information is simply based on the connectivity degree of the gene. The idea is that genes that have the same number of connections are more similar than genes with a different connectivity. 
+\textit{Topological label.} This information is simply based on the connectivity degree of the gene. The idea is that genes that have the same number of connections are more similar than genes with a different connectivity. The node labeling function $\ell$ assigns the degree for nodes $u$ having degree less than or equal than a user defined threshold $T$ ($T=5$ in our experimental evaluation). However degree values larger than $T$ are subsequently discretized into $k$ levels. Formally, the labeling function is defined as:
+\begin{center}
+$\ell(u) = \left\{
+	\begin{array}{ll}
+		d(u),\  & \mbox{if } d(u) \leq T \\
+		T+i,\ & \mbox{if } d(u) > T
+	\end{array}
+\right.$,
+\end{center}
+where $i = \lceil \frac{d(u)-T}{bin}\rceil$, $bin = \frac{d(G)-T}{\lambda - T}$ and $\lambda$ ($\lambda > T$) is the maximum number of symbols used. The value of $\lambda$ depend on the degree distribution and can be tuned as a hyperparameter of the approach.
 
-Functional information is based on the \textit{Gene Ontology} \cite{gene2004gene} resource. We use the ontology to construct binary vectors representing a bag-of-words encoding for each gene (i.e. if a GO-term is associated with the gene). The resulting representations are then clustered using the k-means algorithm  into a user defined number of classes, so that genes with similar description profiles receive the same class identifier as label. 
+
+\textit{Functional label.} This type of information is based on the \textit{Gene Ontology} \cite{gene2004gene} resource. We use the ontology to construct binary vectors representing a bag-of-words encoding for each gene (i.e. if one of the 26501 GO-terms is associated with the gene). The resulting vectors are then clustered using the k-means algorithm  into a user defined number of classes $K$ (tuned as a hyperparameter of the approach), so that genes with similar description profiles receive the same class identifier as label. 
 
 \textit{Real valued vector information encoding.}
-In addition to encoding the functional information as a discrete label we add a richer description by computing the multi-class confidence of the k-means classifier and encode it as real valued vector associated to each gene node. In this way we can fully exploit the latent description of the genes in terms of the different functional groups captured by the clustering procedure.
+In addition to encoding the functional information as a discrete label we add a richer description by computing the similarity vector w.r.t. to each cluster. In this way we can fully exploit the latent description of the genes in terms of the different functional groups captured by the clustering procedure. Formally, given a vector $v \in \IR^{26501}$ we compute a similarity vector $S(v)= \{s_1, s_2, \ldots s_K\}$ with entries $s_i = \frac{1}{1+d(v,c_i)}$ where $d(v,c_i)$ is the euclidean distance of $v$ from the center of the i$^{th}$ cluster $c_i = \frac{1}{|C_i|}\sum_{x \in C_i} x$ computed as the geometric mean of the elements in the cluster $C_i$.
 
 
 \subsection{Network Decomposition} 
 In gene-disease associations networks it is not uncommon to find nodes with high degrees. Unfortunately these cases cannot be effectively processed by a neighborhood based decomposition kernel since these are based on the notion of exact matches and the probability of finding identical neighborhoods decreases exponentially as the degree increases. This means that in a finite network it quickly becomes impossible to find any match and hence learn or generalize at all. As an alternative, we propose a procedure to ''sparsify'' the network that is observed by the neighborhood kernel. In reality we do not alter the cardinality of the edge set, but rather mark the edges with special attributes that will inform the kernel computation. The result is a procedure that decomposes the network in a linked collection of sparse sub-networks where each node has a reduced connectivity when considering the edges of a specific type. However the other edges are still available to connect the various sub-networks. We distinguish two types of edges: {\em conjunctive} and {\em disjunctive} edges. Nodes linked by conjunctive edges are going to be used jointly to define the notion of context and will be visible to the neighborhood graph kernel. Nodes linked by disjunctive edges are instead used to define features based only on the pairwise co-occurrence of the genes at the endpoints and are processed by our novel kernel.
 
-\textit{Definitions.} 
-We represent a problem instance as a graph $G=(V,E)$ where $V$ is the set of nodes and $E$ is the set of links.
-We define the \textit{distance} $\mathcal{D}(u,v)$ between two nodes $u$ and $v$, as the number of edges on the shortest path between them. The \textit{neighborhood} of a node $u$ with radius $r$, $N_r(u) = \lbrace v\ |\ d(u,v) \leq r \rbrace$, is the set of nodes at distance no greater than $r$ from $u$. The corresponding \textit{neighborhood subgraph} $\mathcal{N}_{r}^{u}$ is the  subgraph induced by the neighborhood (i.e. considering all the edges with endpoints in $N_r(u)$). The \textit{degree} of a node $u$, $d(u) = |\mathcal{N}_{1}^{u}|$, is the cardinality of its neighborhood. 
+
 
 
 \textit{Iterative k-core decomposition} \cite{alvarez2005k}: The node set is partitioned in two groups on the basis of the degree of each node w.r.t. a threshold degree $D$, the first part contains all nodes with degree smaller or equal than $D$ and the second part the remaining ones. The node partition is used to induce the ''conjunctive' vs ''disjunctive' notion for the edge partition: edges that have both endpoints in the same part (be it the first or the second) are marked as conjunctive, otherwise they are marked as disjunctive. We apply the k-core decomposition iteratively, where at each iteration we consider only the graph induced by the conjunctive edges. We stop iterating the decomposition after a user defined number of steps. Note that this decomposition does not alter the cardinality of the edge set, it is simply a procedure to mark each edge with the attribute conjunctive or disjunctive.  
