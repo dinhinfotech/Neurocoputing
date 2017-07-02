@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/MacPorts 2015_8) (preloaded format=pdflatex 2016.2.22)  2 JUL 2017 08:50
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/MacPorts 2015_8) (preloaded format=pdflatex 2016.2.22)  2 JUL 2017 12:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -476,17 +476,7 @@ Overfull \hbox (0.17856pt too wide) in paragraph at lines 207--208
  []
 
 [8 <./cdnk.pdf>]
-Overfull \hbox (5.13953pt too wide) in paragraph at lines 213--215
-\OT1/cmr/m/n/10 ram-e-ter $\OML/cmm/m/it/10 C$ \OT1/cmr/m/n/10 for the SVM is s
-earched in $\OMS/cmsy/m/n/10 f\OT1/cmr/m/n/10 10[]\OML/cmm/m/it/10 ;  \OT1/cmr/
-m/n/10 10[]\OML/cmm/m/it/10 ;  \OT1/cmr/m/n/10 10[]\OML/cmm/m/it/10 ;  \OT1/cmr
-/m/n/10 10[]\OML/cmm/m/it/10 ;  \OT1/cmr/m/n/10 10[]\OML/cmm/m/it/10 ; \OT1/cmr
-/m/n/10 1\OML/cmm/m/it/10 ;  \OT1/cmr/m/n/10 10\OML/cmm/m/it/10 ;  \OT1/cmr/m/n
-/10 10[]\OMS/cmsy/m/n/10 g$\OT1/cmr/m/n/10 . 
- []
-
-
-Overfull \hbox (2.40923pt too wide) in paragraph at lines 254--278
+Overfull \hbox (2.40923pt too wide) in paragraph at lines 259--283
  [][] 
  []
 
@@ -498,28 +488,28 @@ FiXme Summary: Number of notes: 0,
 (FiXme)        Number of fatal errors: 0,
 (FiXme)        Total: 0.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 318.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 324.
 [13]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 318.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 324.
  (./neurocomputing.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 318.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 318.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 324.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 324.
 Package rerunfilecheck Info: File `neurocomputing.out' has not changed.
 (rerunfilecheck)             Checksum: C7AAC3D6A8B77A559C9C155F7B884153;737.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 318.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 324.
  ) 
 Here is how much of TeX's memory you used:
- 7992 strings out of 494119
- 113348 string characters out of 6155692
- 225033 words of memory out of 5000000
+ 7993 strings out of 494119
+ 113358 string characters out of 6155692
+ 224962 words of memory out of 5000000
  11147 multiletter control sequences out of 15000+600000
  11701 words of font info for 44 fonts, out of 8000000 for 9000
  475 hyphenation exceptions out of 8191
- 40i,11n,65p,2461b,459s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 40i,11n,65p,2461b,451s stack positions out of 5000i,500n,10000p,200000b,80000s
 </opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx10.pfb></o
 pt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmex10.pfb></opt/lo
 cal/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi10.pfb></opt/local/s
@@ -537,10 +527,10 @@ opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy7.pfb></opt/lo
 cal/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti10.pfb></opt/local/s
 hare/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti7.pfb></opt/local/share/t
 exmf-texlive/fonts/type1/public/amsfonts/cm/cmti8.pfb>
-Output written on neurocomputing.pdf (13 pages, 344844 bytes).
+Output written on neurocomputing.pdf (13 pages, 345588 bytes).
 PDF statistics:
- 790 PDF objects out of 1000 (max. 8388607)
- 592 compressed objects within 6 object streams
- 41 named destinations out of 1000 (max. 500000)
+ 791 PDF objects out of 1000 (max. 8388607)
+ 593 compressed objects within 6 object streams
+ 42 named destinations out of 1000 (max. 500000)
  104 words of extra memory for PDF output out of 10000 (max. 10000000)
 
