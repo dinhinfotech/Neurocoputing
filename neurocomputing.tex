@@ -108,7 +108,9 @@ We represent a problem instance as a graph $G=(V,E)$ where $V$ is the set of nod
 We define the \textit{distance} $\mathcal{D}(u,v)$ between two nodes $u$ and $v$, as the number of edges on the shortest path between them. The \textit{neighborhood} of a node $u$ with radius $r$, $N_r(u) = \lbrace v\ |\ \mathcal{D}(u,v) \leq r \rbrace$, is the set of nodes at distance no greater than $r$ from $u$. The corresponding \textit{neighborhood subgraph} $\mathcal{N}_{r}^{u}$ is the  subgraph induced by the neighborhood (i.e. considering all the edges with endpoints in $N_r(u)$). The \textit{degree} of a node $u$, $deg(u) = |\mathcal{N}_{1}^{u}|$, is the cardinality of its neighborhood. The maximum node degree in the graph $G$ is $deg(G)$.
 
 
-\subsection{Gene Labeling} Gene-disease associations networks typically represent genes as nodes labeled with a gene identifier. Here we take a different approach and use the node labels to encode abstract information about the genes. In this way downstream machine learning algorithms can generalize from similar examples and allow the identification of overlooked but related genes. We experiment with two types of information: \textit{i}) topological information and \textit{ii}) functional information. 
+\subsection{Gene Labeling} 
+\label{sec:lab}
+Gene-disease associations networks typically represent genes as nodes labeled with a gene identifier. Here we take a different approach and use the node labels to encode abstract information about the genes. In this way downstream machine learning algorithms can generalize from similar examples and allow the identification of overlooked but related genes. We experiment with two types of information: \textit{i}) topological information and \textit{ii}) functional information. 
 
 \textit{Topological label.} This information is simply based on the connectivity degree of the gene. The idea is that genes that have the same number of connections are more similar than genes with a different connectivity. The node labeling function $\ell$ assigns the degree for nodes $u$ having degree less than or equal a user defined threshold $T$ ($T=5$ in our experimental evaluation). However degree values larger than $T$ are subsequently discretized into $k$ levels. Formally, the labeling function is defined as:
 \begin{center}
@@ -186,7 +188,7 @@ Formally, we define two relations: the \textit{conjunctive relation} $R^{\wedge}
   { \textbf{1}_{A_u \cong A'_{u'}} \cdot { \textbf{1}_{B_{v} \cong B'_{v'}}}}
   $.
 \end{center}
-The CDNK is finally defined as $K(G_u,G_v) = \sum\limits_{r}{\sum\limits_{d}{\kappa_{r,d}(G_u,G_v)}}$, where once again for efficiency reasons, the values of $r$ and $d$ are upper bounded to a given maximal $r^*$ and $d^*$.
+The CDNK is finally defined as $K(G_u,G_{u'}) = \sum\limits_{r}{\sum\limits_{d}{\kappa_{r,d}(G_u,G_{u'})}}$, where once again for efficiency reasons, the values of $r$ and $d$ are upper bounded to a given maximal $r^*$ and $d^*$.
 
 \begin{figure}
 \centering
@@ -196,9 +198,13 @@ The CDNK is finally defined as $K(G_u,G_v) = \sum\limits_{r}{\sum\limits_{d}{\ka
 \end{figure}
 
 \subsection{Real valued node information}
-In order to process real vectors we do a convolution of the vector with the node sparse vector.
+In order to integrate the information of real vectors we proceed as follows. We compute a sparse vector representation for the neighborhood graph rooted in node $v$ following \cite{costa2010fast}: for each neighborhood subgraph we calculate the quasi-isomorphism certificate hash code; we then combine the hashes for the pair of neighborhoods and use the resulting integer as a feature indicator. This yields a direct sparse vector representation (associated to node $u$ in graph $G$) $f: G_u \mapsto \IR^L$ where $L \approx 10K-1M$. Given the real valued vector information (associated to node $u$ in graph $G$) $g: G_u \mapsto \IR^K$ computed as the multi-class similarity to the $K$ clusters (c.f.r. Section \ref{sec:lab}), we update the computation of CDNK considering the discrete convolution of the discrete information with the real valued information:   
 
+$$K(G_u,G_{u'}) = \left< f(G_u) \bigotimes g(G_u), f(G_{u'}) \bigotimes g(G_{u'}) \right>$$
 
+where the discrete convolution is defined as: 
+$$(f \bigotimes g)[n]=\sum _{m=0}^{K-1}f[n-m]g[m].$$
+In words, we are starting a scaled copy of the real valued vector at the position indicated by each feature computed on the basis of the discrete information. Intuitively, when both the real valued and the discrete information match, the kernel computes a large similarity, but if there is a discrepancy in either one of the sources of information, the similarity will be penalized. 
 
 
 \section{Experimental}
@@ -214,7 +220,7 @@ To compare the performance of graph node kernels we focus on the {\em gene prior
 The hyper parameters of the various methods are tuned using a k-fold strategy. However due to the non i.i.d. nature of the problem, we employ a stronger setup to ensure no information leakage. The dataset on which we are validating the performance is never subsequently used in the predictive performance estimate. The values for diffusion parameter in DK and MED are sampled in $\lbrace 10^{-3}, 10^{-3}, 10^{-2}, 10^{-1} \rbrace$, time steps in MD in $\lbrace 1, 10, 100 \rbrace$ and RL parameter in $\lbrace 1, 4, 7 \rbrace$. For CDNK, the degree threshold values are sampled in $\lbrace 10,\ 15,\ 20 \rbrace$, clique size threshold in $\lbrace 4,\ 5 \rbrace$, maximum radius in $\lbrace 1,\ 2 \rbrace$, maximum distance in $\lbrace 2,\ 3,\ 4 \rbrace$, nuber of clusters $K$ in $\lbrace 5,\ 7 \rbrace$. Finally, the regularization trade off parameter $C$ for the SVM is sampled in $\lbrace 10^{-5},  \ 10^{-4}, \ 10^{-3},\ 10^{-2},\ 10^{-1}, 1,\ 10,\ 10^2 \rbrace$.
 
 \section{Results and discussion}
-Table \ref{table_biogps} and \ref{table_pathways} show the AUC performance of different graph node kernel models. Predictive models based on CDNK variations are ranked in top positions in all cases on BioGPS dataset and 9 out of 11 cases on Pathways when compared to diffusion based kernels. CDNK is ranking first when considering both the average AUC-ROC and the average rank with a difference, w.r.t. the best diffusion kernel, ranging from 5.4$\%$ to 10$\%$ and from 1.2$\%$ to 3.2$\%$ on BioGPS and Pathways, respectively. Regarding the variations of CDNK, the integration of real valued vector information improves the performance in most cases on using discrete labels only. The improvement in average ranges from 1.3$\%$ to 4.6$\%$. 
+Table \ref{table_biogps} and \ref{table_pathways} show the AUC performance of different graph node kernel models. Predictive models based on CDNK variations are ranked in top positions in all cases on BioGPS dataset and 9 out of 11 cases on Pathways when compared to diffusion based kernels. CDNK is ranking first when considering both the average AUC-ROC and the average rank with a difference, w.r.t. the best diffusion kernel, ranging from 5.4$\%$ to 10$\%$ and from 1.2$\%$ to 3.2$\%$ on BioGPS and Pathways, respectively. Regarding the variations of CDNK, the integration of real valued vector information improves the performance in most cases on using discrete labels only. The improvement in average ranges from 1.3$\%$ to 4.6$\%$. Note that also in the case where only topological information is used to induce the discrete label (CDNK3 in the Table \ref{table_biogps} and \ref{table_pathways}), the proposed approach improves on state-of-the-art. 
 
 %It is worth noticing that on average the rank of CDNK with real vector information are high in both ways of discrete labeling and on both databases.
 
