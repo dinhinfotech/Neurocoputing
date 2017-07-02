@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/MacPorts 2015_8) (preloaded format=pdflatex 2016.2.22)  2 JUL 2017 13:02
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/MacPorts 2015_8) (preloaded format=pdflatex 2016.2.22)  2 JUL 2017 13:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -463,13 +463,16 @@ Overfull \hbox (8.11174pt too wide) in paragraph at lines 160--161
 e Ker-nel (NSPDK)
  []
 
-[6 <./clique.pdf>] <cdnk.pdf, id=124, 163.88196pt x 58.17807pt>
+[6 <./clique.pdf>]
+
+pdfTeX warning: pdflatex (file ./cdnk.pdf): PDF inclusion: found PDF version <1
+.7>, but at most version <1.5> allowed
+<cdnk.pdf, id=126, 163.88226pt x 58.17805pt>
 File: cdnk.pdf Graphic file (type pdf)
  <use cdnk.pdf>
 Package pdftex.def Info: cdnk.pdf used on input line 195.
-(pdftex.def)             Requested size: 310.4979pt x 110.23053pt.
-
-[7] [8 <./cdnk.pdf>]
+(pdftex.def)             Requested size: 310.4979pt x 110.2305pt.
+ [7] [8 <./cdnk.pdf>]
 Overfull \hbox (0.17856pt too wide) in paragraph at lines 213--214
 []\OT1/cmr/bx/n/10 BioGPS: \OT1/cmr/m/n/10 A gene co-expression net-work is con
 -structed from BioGPS dataset,
@@ -505,7 +508,7 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 330.
 Here is how much of TeX's memory you used:
  7995 strings out of 494119
  113374 string characters out of 6155692
- 224005 words of memory out of 5000000
+ 223953 words of memory out of 5000000
  11148 multiletter control sequences out of 15000+600000
  11701 words of font info for 44 fonts, out of 8000000 for 9000
  475 hyphenation exceptions out of 8191
@@ -527,10 +530,10 @@ opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy7.pfb></opt/lo
 cal/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti10.pfb></opt/local/s
 hare/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti7.pfb></opt/local/share/t
 exmf-texlive/fonts/type1/public/amsfonts/cm/cmti8.pfb>
-Output written on neurocomputing.pdf (14 pages, 351473 bytes).
+Output written on neurocomputing.pdf (14 pages, 305781 bytes).
 PDF statistics:
- 801 PDF objects out of 1000 (max. 8388607)
- 601 compressed objects within 7 object streams
+ 411 PDF objects out of 1000 (max. 8388607)
+ 297 compressed objects within 3 object streams
  43 named destinations out of 1000 (max. 500000)
  104 words of extra memory for PDF output out of 10000 (max. 10000000)
 
