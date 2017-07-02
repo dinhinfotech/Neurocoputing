@@ -32,6 +32,11 @@ D.~Haussler, Convolution kernels on discrete structures, Tech. rep., Technical
 G.~O. Consortium, et~al., The gene ontology (go) database and informatics
   resource, Nucleic acids research 32~(suppl 1) (2004) D258--D261.
 
+\bibitem{costa2010fast}
+F.~Costa, K.~De~Grave, Fast neighborhood subgraph pairwise distance kernel, in:
+  Proceedings of the 26th International Conference on Machine Learning,
+  Omnipress, 2010, pp. 255--262.
+
 \bibitem{alvarez2005k}
 J.~I. Alvarez-Hamelin, L.~Dall'Asta, A.~Barrat, A.~Vespignani, k-core
   decomposition: A tool for the visualization of large scale networks, arXiv
@@ -40,11 +45,6 @@ J.~I. Alvarez-Hamelin, L.~Dall'Asta, A.~Barrat, A.~Vespignani, k-core
 \bibitem{tarjan1985decomposition}
 R.~E. Tarjan, Decomposition by clique separators, Discrete mathematics 55~(2)
   (1985) 221--232.
-
-\bibitem{costa2010fast}
-F.~Costa, K.~De~Grave, Fast neighborhood subgraph pairwise distance kernel, in:
-  Proceedings of the 26th International Conference on Machine Learning,
-  Omnipress, 2010, pp. 255--262.
 
 \bibitem{goh2007human}
 K.-I. Goh, M.~E. Cusick, D.~Valle, B.~Childs, M.~Vidal, A.-L. Barab{\'a}si, The

@@ -101,7 +101,7 @@ Graph node kernels, graph decomposition, disease gene prioritization
 Predictive systems for gene-disease associations are often based on a notion of similarity between genes. A common strategy is to encode relations between genes as a network and use graph based techniques to make useful inferences. In the last decades, a number of graph kernel methods have been proposed that directly exploit transitive properties in biological networks. The prototypical method is the Diffusion kernel (DK) \cite{kondor2002diffusion} inspired by the heat diffusion phenomenon. The key idea is to allow a given amount of {\em heat} placed on nodes to {\em diffuse} through the edges. The similarity between two nodes $v_{i}, v_{j}$ is then defined as the amount of heat starting from $v_{i}$ and reaching $v_{j}$ within a given time interval. In DK the heat flow is proportional to the number of paths connecting two nodes, which introduces an undesired bias that penalize peripheral nodes w.r.t. central ones. This problem is tackled by a modified version of DK called Markov exponential diffusion kernel (MED) \cite{chen2014disease} where a Markov matrix replaces the Laplacian matrix.  Another kernel called Markov diffusion kernel (MD) \cite{fouss2006experimental}, exploits instead the notion of {\em diffusion distances}, a measure of similarity between patterns of heat diffusion. The Regularized Laplacian kernel (RL) \cite{chebotarev2006matrix} represents instead a normalized version of the random walk with restart model and defines the node similarity as the number of paths connecting two nodes with different lengths. All these approaches can be applied to dense networks with high degree nodes. A drawback of these approaches is however their relatively low discriminative capacity. This is in part due to the fact that information is processed in an additive and independent fashion which prevents them from accurately modeling the configuration of each gene's context. To address this issue here we propose to employ a {\em decompositional} graph kernel (DGK) \cite{haussler1999convolution} technique in which the similarity function between graphs can be formed by decomposing each graph into subgraphs and by devising a valid local kernel between the subgraphs. To exploit its higher discriminative capacity we first decompose the network in a collection of connected sparse graphs and then we develop a suitable kernel, that we call Conjunctive Disjunctive Node Kernel (CDNK).
 
 \section{Material and methods}
-We start from the type of similarity notion computed by decomposition kernels between graph instances and adapt it to express the similarity between nodes in a single network. In this work we use three key ideas: \textit{i}) genes are described using their functional profile encoded as a vector of real values, \textit{ii}) the network is marked to distinguish highly connected components from sparsely connected ones, and \textit{iii}) we transform the neighborhood of each gene in a sparse high dimensional vector that can be easily processed by standard machine learning techniques such as SVMs.
+We start from the type of similarity notion computed by a neighborhood based decomposition kernel between graph instances and adapt it to express the similarity between nodes in a single network. In this work we use three key ideas: \textit{i}) genes are described using their functional profile encoded as a vector of real values, \textit{ii}) the network is marked to distinguish highly connected components from sparsely connected ones, and \textit{iii}) we transform the neighborhood of each gene in a sparse high dimensional vector that can be easily processed by standard machine learning techniques such as SVMs.
 
 \textit{Definitions.} 
 We represent a problem instance as a graph $G=(V,E)$ where $V$ is the set of nodes and $E$ is the set of links.
@@ -130,36 +130,12 @@ where $i = \lceil \frac{deg(u)-T}{bin}\rceil$, $bin = \frac{deg(G)-T}{\lambda - 
 In addition to encoding the functional information as a discrete label we add a richer description by computing the similarity vector w.r.t. to each cluster. In this way we can fully exploit the latent description of the genes in terms of the different functional groups captured by the clustering procedure. Formally, given a vector $v \in \IR^{26501}$ we compute a similarity vector $S(v)= \{s_1, s_2, \ldots s_K\}$ with entries $s_i = \frac{1}{1+d(v,c_i)}$ where $d(v,c_i)$ is the euclidean distance of $v$ from the center of the i$^{th}$ cluster $c_i = \frac{1}{|C_i|}\sum_{x \in C_i} x$ computed as the geometric mean of the elements in the cluster $C_i$.
 
 
-\subsection{Network Decomposition} 
-In gene-disease associations networks it is not uncommon to find nodes with high degrees. Unfortunately these cases cannot be effectively processed by a neighborhood based decomposition kernel since these are based on the notion of exact matches and the probability of finding identical neighborhoods decreases exponentially as the degree increases. This means that in a finite network it quickly becomes impossible to find any match and hence learn or generalize at all. As an alternative, we propose a procedure to ``sparsify'' the network that is observed by the neighborhood kernel. In reality we do not alter the cardinality of the edge set, but rather mark the edges with special attributes that will inform the kernel computation. The result is a procedure that decomposes the network in a linked collection of sparse sub-networks where each node has a reduced connectivity when considering the edges of a specific type. However the other edges are still available to connect the various sub-networks. We distinguish two types of edges: {\em conjunctive} and {\em disjunctive} edges. Nodes linked by conjunctive edges are going to be used jointly to define the notion of context and will be visible to the neighborhood graph kernel. Nodes linked by disjunctive edges are instead used to define features based only on the pairwise co-occurrence of the genes at the endpoints and are processed by our novel kernel.
-
-
-
-
-\textit{Iterative k-core decomposition} \cite{alvarez2005k}: The node set is partitioned in two groups on the basis of the degree of each node w.r.t. a threshold degree $D$, the first part contains all nodes with degree smaller or equal than $D$ and the second part the remaining ones. The node partition is used to induce the ``conjunctive'' vs ``disjunctive'' notion for the edge partition: edges that have both endpoints in the same part are marked as conjunctive, otherwise they are marked as disjunctive. We apply the k-core decomposition iteratively, where at each iteration we consider only the graph induced by the conjunctive edges. We stop iterating the decomposition after a user defined number of steps. Note that this decomposition does not alter the cardinality of the edge set, it is simply a procedure to mark each edge with the attribute conjunctive or disjunctive.  
-
-\begin{figure}
-\centering
-\includegraphics[width=.9\textwidth]{k_core}
-\caption{K-core decomposition with degree threshold $D = 5$}
-\label{fig:example}
-\end{figure}
-
-\textit{Clique decomposition} \cite{tarjan1985decomposition}: To model the notion that nodes in a clique are tightly related, we summarize the whole clique with a new ``representative'' node. All the cliques (completely connected subgraphs) with a number of nodes greater than or equal a threshold size $C$ are identified. The endpoints of all edges incident on the clique's nodes are moved to the representative node. Disjunctive edges are introduced to connect each node in the clique to the representative. Finally all edges with both endpoints in the clique are removed.
-
-In our work a network is transformed by applying first the iterative k-core decomposition and then the clique decomposition.
-
-\begin{figure}
-\centering
-\includegraphics[width=.9\textwidth]{clique}
-\caption{Clique decomposition with threshold $C = 4$}
-\label{fig:example}
-\end{figure}
 
 \subsection{Node Graph Kernels} 
 We start from the Neighborhood Subgraph Pairwise Distance Kernel (NSPDK) \cite{costa2010fast} and adapt it to express the similarity between nodes in a single network. The key idea in NSPDK is to decompose graphs in small fragments and count how many pairs of fragments are shared between two instances. We introduce two improvements: \textit{i}) we partition the features according to the individual node's neighborhood, and \textit{ii}) we introduce a  distinction between ``disjunctive'' and ``conjunctive'' edges.
 
 \subsubsection{The Neighborhood Subgraph Pairwise Distance Kernel}
+\label{sec:k}
 The NSPDK is an instance of convolution kernel \cite{haussler1999convolution} where given a graph $G \in \mathcal{G}$ and two rooted graphs $A_u, B_v$, the relation $R_{r,d}(A_u, B_v, G)$ is true {\em iff} $A_u \cong \mathcal{N}_r^u$ is (up to isomorphism $\cong$) a neighborhood subgraph of radius $r$ of $G$ and so is $B_v \cong  \mathcal{N}_r^v$, with roots at distance $\mathcal{D}(u,v)= d$. We denote $R^{-1}$ as the inverse relation that returns all pairs of neighborhoods of radius $r$ at distance $d$ in $G$, $R^{-1}_{r,d}(G) = \lbrace A_u, B_v | R_{r,d}(A_u,B_v,G)=true\rbrace$. The kernel $\kappa_{r,d}$ over $\mathcal{G} \times \mathcal{G}$, counts the number of such fragments in common in two input graphs: 
 \begin{center}
 $\kappa_{r,d}(G,G^{'}) = 
@@ -206,6 +182,32 @@ where the discrete convolution is defined as:
 $$(f \bigotimes g)[n]=\sum _{m=0}^{K-1}f[n-m]g[m].$$
 In words, we are starting a scaled copy of the real valued vector at the position indicated by each feature computed on the basis of the discrete information. Intuitively, when both the real valued and the discrete information match, the kernel computes a large similarity, but if there is a discrepancy in either one of the sources of information, the similarity will be penalized. 
 
+
+\subsection{Network Decomposition} 
+In gene-disease associations networks it is not uncommon to find nodes with high degrees. Unfortunately these cases cannot be effectively processed by a neighborhood based decomposition kernel (see \ref{sec:k}) since these are based on the notion of exact matches and the probability of finding identical neighborhoods decreases exponentially as the degree increases. This means that in a finite network it quickly becomes impossible to find any match and hence learn or generalize at all. As an alternative, we propose a procedure to ``sparsify'' the network that is observed by the neighborhood kernel. In reality we do not alter the cardinality of the edge set, but rather mark the edges with special attributes that will inform the kernel computation. The result is a procedure that decomposes the network in a linked collection of sparse sub-networks where each node has a reduced connectivity when considering the edges of a specific type. However the other edges are still available to connect the various sub-networks. We distinguish two types of edges: {\em conjunctive} and {\em disjunctive} edges. Nodes linked by conjunctive edges are going to be used jointly to define the notion of context and will be visible to the neighborhood graph kernel. Nodes linked by disjunctive edges are instead used to define features based only on the pairwise co-occurrence of the genes at the endpoints and are processed by our novel kernel.
+
+
+
+
+\textit{Iterative k-core decomposition} \cite{alvarez2005k}: The node set is partitioned in two groups on the basis of the degree of each node w.r.t. a threshold degree $D$, the first part contains all nodes with degree smaller or equal than $D$ and the second part the remaining ones. The node partition is used to induce the ``conjunctive'' vs ``disjunctive'' notion for the edge partition: edges that have both endpoints in the same part are marked as conjunctive, otherwise they are marked as disjunctive. We apply the k-core decomposition iteratively, where at each iteration we consider only the graph induced by the conjunctive edges. We stop iterating the decomposition after a user defined number of steps. Note that this decomposition does not alter the cardinality of the edge set, it is simply a procedure to mark each edge with the attribute conjunctive or disjunctive.  
+
+\begin{figure}
+\centering
+\includegraphics[width=.9\textwidth]{k_core}
+\caption{K-core decomposition with degree threshold $D = 5$}
+\label{fig:example}
+\end{figure}
+
+\textit{Clique decomposition} \cite{tarjan1985decomposition}: To model the notion that nodes in a clique are tightly related, we summarize the whole clique with a new ``representative'' node. All the cliques (completely connected subgraphs) with a number of nodes greater than or equal a threshold size $C$ are identified. The endpoints of all edges incident on the clique's nodes are moved to the representative node. Disjunctive edges are introduced to connect each node in the clique to the representative. Finally all edges with both endpoints in the clique are removed.
+
+In our work a network is transformed by applying first the iterative k-core decomposition and then the clique decomposition.
+
+\begin{figure}
+\centering
+\includegraphics[width=.9\textwidth]{clique}
+\caption{Clique decomposition with threshold $C = 4$}
+\label{fig:example}
+\end{figure}
 
 \section{Experimental}
 We perform an empirical evaluation of the predictive performance of several kernel based methods on two of the databases used in \cite{chen2014disease}.

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/MacPorts 2015_8) (preloaded format=pdflatex 2016.2.22)  2 JUL 2017 13:30
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/MacPorts 2015_8) (preloaded format=pdflatex 2016.2.22)  2 JUL 2017 13:35
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -446,40 +446,41 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
 
-{/opt/local/var/db/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3] [4]
-<k_core.pdf, id=92, 270.18958pt x 90.988pt>
-File: k_core.pdf Graphic file (type pdf)
- <use k_core.pdf>
-Package pdftex.def Info: k_core.pdf used on input line 143.
-(pdftex.def)             Requested size: 310.4979pt x 104.56178pt.
- [5 <./k_core.pdf>] <clique.pdf, id=112, 229.51318pt x 51.43561pt>
-File: clique.pdf Graphic file (type pdf)
- <use clique.pdf>
-Package pdftex.def Info: clique.pdf used on input line 154.
-(pdftex.def)             Requested size: 310.4979pt x 69.58809pt.
-
-Overfull \hbox (8.11174pt too wide) in paragraph at lines 160--161
+{/opt/local/var/db/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
+Overfull \hbox (8.11174pt too wide) in paragraph at lines 135--136
 []\OT1/cmr/m/n/10 We start from the Neigh-bor-hood Sub-graph Pair-wise Dis-tanc
 e Ker-nel (NSPDK)
  []
 
-[6 <./clique.pdf>]
+[4] [5]
 
 pdfTeX warning: pdflatex (file ./cdnk.pdf): PDF inclusion: found PDF version <1
 .7>, but at most version <1.5> allowed
-<cdnk.pdf, id=126, 163.88226pt x 58.17805pt>
+<cdnk.pdf, id=102, 163.88226pt x 58.17805pt>
 File: cdnk.pdf Graphic file (type pdf)
  <use cdnk.pdf>
-Package pdftex.def Info: cdnk.pdf used on input line 195.
+Package pdftex.def Info: cdnk.pdf used on input line 171.
 (pdftex.def)             Requested size: 310.4979pt x 110.2305pt.
- [7] [8 <./cdnk.pdf>]
-Overfull \hbox (0.17856pt too wide) in paragraph at lines 213--214
+ [6 <./cdnk.pdf>]
+[7] <k_core.pdf, id=282, 270.18958pt x 90.988pt>
+File: k_core.pdf Graphic file (type pdf)
+ <use k_core.pdf>
+Package pdftex.def Info: k_core.pdf used on input line 196.
+(pdftex.def)             Requested size: 310.4979pt x 104.56178pt.
+
+<clique.pdf, id=284, 229.51318pt x 51.43561pt>
+File: clique.pdf Graphic file (type pdf)
+ <use clique.pdf>
+Package pdftex.def Info: clique.pdf used on input line 207.
+(pdftex.def)             Requested size: 310.4979pt x 69.58809pt.
+
+Overfull \hbox (0.17856pt too wide) in paragraph at lines 215--216
 []\OT1/cmr/bx/n/10 BioGPS: \OT1/cmr/m/n/10 A gene co-expression net-work is con
 -structed from BioGPS dataset,
  []
 
-[9]
-Overfull \hbox (2.40923pt too wide) in paragraph at lines 265--289
+[8 <./k_core.pdf>] [9 <./clique.pdf>]
+Overfull \hbox (2.40923pt too wide) in paragraph at lines 267--291
  [][] 
  []
 
@@ -491,25 +492,25 @@ FiXme Summary: Number of notes: 0,
 (FiXme)        Number of fatal errors: 0,
 (FiXme)        Total: 0.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 330.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 332.
 [14]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 330.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 332.
  (./neurocomputing.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 330.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 330.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 332.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 332.
 Package rerunfilecheck Info: File `neurocomputing.out' has not changed.
-(rerunfilecheck)             Checksum: C7AAC3D6A8B77A559C9C155F7B884153;737.
+(rerunfilecheck)             Checksum: 7A694D0204F9E482926076B8C1BB067A;737.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 330.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 332.
  ) 
 Here is how much of TeX's memory you used:
- 7995 strings out of 494119
- 113374 string characters out of 6155692
- 223953 words of memory out of 5000000
- 11148 multiletter control sequences out of 15000+600000
+ 7996 strings out of 494119
+ 113381 string characters out of 6155692
+ 224040 words of memory out of 5000000
+ 11149 multiletter control sequences out of 15000+600000
  11701 words of font info for 44 fonts, out of 8000000 for 9000
  475 hyphenation exceptions out of 8191
  40i,11n,65p,2461b,459s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -530,10 +531,10 @@ opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy7.pfb></opt/lo
 cal/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti10.pfb></opt/local/s
 hare/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti7.pfb></opt/local/share/t
 exmf-texlive/fonts/type1/public/amsfonts/cm/cmti8.pfb>
-Output written on neurocomputing.pdf (14 pages, 305781 bytes).
+Output written on neurocomputing.pdf (14 pages, 305869 bytes).
 PDF statistics:
- 411 PDF objects out of 1000 (max. 8388607)
- 297 compressed objects within 3 object streams
+ 412 PDF objects out of 1000 (max. 8388607)
+ 298 compressed objects within 3 object streams
  43 named destinations out of 1000 (max. 500000)
  104 words of extra memory for PDF output out of 10000 (max. 10000000)
 
