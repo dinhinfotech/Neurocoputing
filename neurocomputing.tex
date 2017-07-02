@@ -145,14 +145,14 @@ In gene-disease associations networks it is not uncommon to find nodes with high
 \label{fig:example}
 \end{figure}
 
-\textit{Clique decomposition} \cite{tarjan1985decomposition}: To model the notion that nodes in a clique are tightly related, we summarize the whole clique with a new ``representative'' node. All the cliques (completely connected subgraphs) with a number of nodes greater than a threshold size $C$ are identified. The endpoints of all edges incident on the clique's nodes are moved to the representative node. Disjunctive edges are introduced to connect each node in the clique to the representative. Finally all edges with both endpoints in the clique are removed.
+\textit{Clique decomposition} \cite{tarjan1985decomposition}: To model the notion that nodes in a clique are tightly related, we summarize the whole clique with a new ``representative'' node. All the cliques (completely connected subgraphs) with a number of nodes greater than or equal a threshold size $C$ are identified. The endpoints of all edges incident on the clique's nodes are moved to the representative node. Disjunctive edges are introduced to connect each node in the clique to the representative. Finally all edges with both endpoints in the clique are removed.
 
 In our work a network is transformed by applying first the iterative k-core decomposition and then the clique decomposition.
 
 \begin{figure}
 \centering
 \includegraphics[width=.9\textwidth]{clique}
-\caption{Pairwise neighborhood subgraphs with $r=1$, $d=3$ using ``conjuction'' and ``disjuctive'' edges}
+\caption{Clique decomposition with threshold $C = 4$}
 \label{fig:example}
 \end{figure}
 
