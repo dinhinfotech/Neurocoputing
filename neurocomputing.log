@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/MacPorts 2015_8) (preloaded format=pdflatex 2016.2.22)  2 JUL 2017 13:35
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/MacPorts 2015_8) (preloaded format=pdflatex 2016.2.22)  2 JUL 2017 14:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -531,7 +531,7 @@ opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy7.pfb></opt/lo
 cal/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti10.pfb></opt/local/s
 hare/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti7.pfb></opt/local/share/t
 exmf-texlive/fonts/type1/public/amsfonts/cm/cmti8.pfb>
-Output written on neurocomputing.pdf (14 pages, 305869 bytes).
+Output written on neurocomputing.pdf (14 pages, 305860 bytes).
 PDF statistics:
  412 PDF objects out of 1000 (max. 8388607)
  298 compressed objects within 3 object streams
